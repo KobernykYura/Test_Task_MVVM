@@ -8,7 +8,7 @@ namespace Model
 {
     public class SerializationXML
     {
-        static string path = "../../../Model/Students.xml";
+        static string path = "Students.xml"; //../../../Model/
         private Student[] studentsArray;
 
         public SerializationXML()
@@ -17,13 +17,21 @@ namespace Model
         }
 
         /// <summary>
-        /// Десериализует массив студентов из XML файла в массив.
+        /// Deserializes an array of students from an XML file into an array.
         /// </summary>
-        /// <returns>Возвращает список студентов.</returns>
-        public Student[] getDocumentData()
+        /// <returns>Returns the list of students.</returns>
+        public Student[] getStudents()
         {
+            XElement document;
+            try
+            {
+                document = XElement.Load(path);
+            }
+            catch (Exception)
+            {
+                    throw ;
+            }
             
-            var document = XElement.Load(path);
             var collection = from elem in document.Descendants("Student") select new Student {
                 Id = Convert.ToInt32( elem.Attribute("Id").Value),
                 FirstName = elem.Element("FirstName").Value,
@@ -37,10 +45,10 @@ namespace Model
         }
 
         /// <summary>
-        /// Сериализует объект в XML файл
+        /// Serialize an object into an XML file
         /// </summary>
-        /// <param name="student">Объект для сериализации.</param>
-        public void getInDocumentAdd(Student student)
+        /// <param name="student">The object for serialization.</param>
+        public void addStudent(Student student)
         {
             XDocument xdoc = XDocument.Load(path);
             XElement root = xdoc.Element("Students");
@@ -53,12 +61,12 @@ namespace Model
             new XElement("Gender", student.Gender)));
             xdoc.Save(path);
         }
-   
+
         /// <summary>
-        /// Изменяет значения выбранного объекта в XML файле
+        /// Changes the values of the selected object in an XML file
         /// </summary>
-        /// <param name="student">Объект для изминения.</param>
-        public void getInDocumentEdit(Student student)
+        /// <param name="student">The object to modify.</param>
+        public void updateStudent(Student student)
         {
             XDocument xdoc = XDocument.Load(path);
             XElement root = xdoc.Element("Students");
@@ -78,10 +86,10 @@ namespace Model
         }
 
         /// <summary>
-        /// Удаляет объект из XML файла 
+        /// Removes an object from an XML file 
         /// </summary>
-        /// <param name="student">Удаляемый объект.</param>
-        public void getInDocumentDelete(Student student)
+        /// <param name="student">The object to be deleted.</param>
+        public void deleteStudent(Student student)
         {
             XDocument xdoc = XDocument.Load(path);
             XElement root = xdoc.Element("Students");

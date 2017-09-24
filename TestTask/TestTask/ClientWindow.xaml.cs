@@ -5,7 +5,7 @@ using ViewModel;
 namespace TestTask
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class ClientWindow : Window
     {
@@ -15,38 +15,38 @@ namespace TestTask
             DataContext = new ViewModelM();
         }
         /// <summary>
-        /// Событие нажатия кнопки добавить
+        /// Click event to add button
         /// </summary>
-        /// <param name="sender">объект</param>
-        /// <param name="e">информация по событию</param>
+        /// <param name="sender">object</param>
+        /// <param name="e">event information</param>
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             WindowAdd win = new WindowAdd();
             win.Owner = this;
             win.ShowDialog();
 
-            //Проверка добавляемого объекта
+            //Checking the added object
             if (win.studObj != null || win.studObj.FirstName!= null || win.studObj.Last != null || win.studObj.Age != default(int))
             {
                 ((ViewModelM)DataContext).Add(win.studObj);
             }
         }
         /// <summary>
-        /// Событие нажатия кнопки удалить
+        /// Click event to delete button
         /// </summary>
-        /// <param name="sender">объект</param>
-        /// <param name="e">информация по событию</param>
+        /// <param name="sender">object</param>
+        /// <param name="e">event information</param>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Student stud = ((ViewModelM)DataContext).SelectedStudent;
 
-            //Проверка выбран ли для удаления элемент в списке
+            //Check whether the item in the list is selected for deletion 
             if (stud == null)
             {
                 MessageBox.Show("Выберите элемент для удаления");
                 return;
             }
-            //Диалоговое окно подтвержнеия
+            //Confirmation Dialog Box
             var res = MessageBox.Show(this, "Вы уверены в удалении студента?", "Удаление", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
             if (MessageBoxResult.Yes == res)
             {
@@ -54,15 +54,15 @@ namespace TestTask
             }
         }
         /// <summary>
-        /// Событие нажатия кнопки редактировать
+        /// Click event edit button
         /// </summary>
-        /// <param name="sender">объект</param>
-        /// <param name="e">информация по событию</param>
+        /// <param name="sender">objwct</param>
+        /// <param name="e">event information</param>
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Student stud = ((ViewModelM)DataContext).SelectedStudent;
 
-            //Проверка выбран ли для редактирования элемент в списке
+            //Check if the item in the list is selected for editing
             if (stud == null)
             {
                 MessageBox.Show("Выберите элемент для редактирования");

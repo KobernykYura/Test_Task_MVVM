@@ -1,31 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CommonObject;
-using ViewModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace TestTask
 {
     /// <summary>
-    /// Логика взаимодействия для WindowAdd.xaml
+    /// Logic of interaction for WindowAdd.xaml
     /// </summary>
     public partial class WindowAdd : Window
     {
         public Student studObj;
 
         /// <summary>
-        /// Конструктор для добавления объекта
+        /// Constructor for adding an object
         /// </summary>
         public WindowAdd()
         {
@@ -38,9 +26,9 @@ namespace TestTask
             DataContext = new Student();
         }
         /// <summary>
-        /// Конструктор для редактирования объекта
+        /// Constructor for editing an object
         /// </summary>
-        /// <param name="stud">Объект редактирования</param>
+        /// <param name="stud">Editing Object</param>
         public WindowAdd(Student stud)
         {
             InitializeComponent();
@@ -52,7 +40,7 @@ namespace TestTask
             DataContext = stud;
         }
         /// <summary>
-        /// Событие сохранения объекта
+        /// Object save event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -60,7 +48,7 @@ namespace TestTask
         {
             studObj = (Student)DataContext;
 
-            //Валидация значений
+            //Validation of values
             var results = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
             var context = new ValidationContext(studObj);
             if (!Validator.TryValidateObject(studObj, context, results, true))

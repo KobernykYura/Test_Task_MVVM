@@ -12,35 +12,35 @@ namespace CommonObject
     {
 
         /// <summary>
-        /// Свойство поля id;
+        /// Property of the id field;
         /// </summary>
         public int Id {
             get { return id; }
             set { id = value;  OnPropertyChanged("Id"); }
         }
         /// <summary>
-        /// Свойство поля firstname;
+        /// Property of the firstname field;
         /// </summary>
         public string FirstName {
             get { return firstname; }
             set { firstname = value; OnPropertyChanged("FirstName"); }
         }
         /// <summary>
-        /// Свойство поля last.
+        /// Property of the last field;
         /// </summary>
         public string Last {
             get { return lastName; }
             set { lastName = value; OnPropertyChanged("LastName"); }
         }
         /// <summary>
-        /// Свойство поля age.
+        /// Property of the age field;
         /// </summary>
         public int Age {
             get { return age; }
             set { age = value; OnPropertyChanged("Age"); }
         }
         /// <summary>
-        /// Свойство поля gender.
+        /// Property of the gender field;
         /// </summary>
         public string Gender {
             get { return gender; }
@@ -48,11 +48,11 @@ namespace CommonObject
         }
 
         /// <summary>
-        /// Свойство представления однострочным выводом имени и фамилии
+        /// The representation property with a single-line output of the name and surname
         /// </summary>
         public string FullName { get { return (firstname +" "+ lastName); } }
         /// <summary>
-        /// Свойство представления возраста
+        /// Age representation property
         /// </summary>
         public string AgePostfix
         {
@@ -68,7 +68,7 @@ namespace CommonObject
             }
         }
         /// <summary>
-        /// Свойство представления пола у человека.
+        /// The property of gender representation in man.
         /// </summary>
         public string GenderString
         {
@@ -112,22 +112,22 @@ namespace CommonObject
         }
 
         /// <summary>
-        /// Событие изменения коллекции
+        /// Change collection event
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
-        /// Метод вызова изменений.
+        /// Method of calling changes.
         /// </summary>
-        /// <param name="prop">Имя изменяемого свойства</param>
+        /// <param name="prop">The name of the property to be changed</param>
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         /// <summary>
-        /// Метод валидациии объекта.
+        /// Method of object validation.
         /// </summary>
-        /// <param name="validationContext">Контекст валидации(объект для валидации) по макету интерфейса</param>
+        /// <param name="validationContext">The validation context (object for validation) by the interface layout</param>
         /// <returns></returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

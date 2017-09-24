@@ -10,13 +10,13 @@ namespace ViewModel
 {
     public class ViewModelM : INotifyPropertyChanged
     {
-        private int index;
+        //private int index;
         private Student selectedStudent;
         public ObservableCollection<Student> Students { get; set; }
         SerializationXML xML;
 
         /// <summary>
-        /// Свойство выбранного элемента.
+        /// The property of the selected item.
         /// </summary>
         public Student SelectedStudent
         {
@@ -29,20 +29,20 @@ namespace ViewModel
             Students = new ObservableCollection<Student>();
             xML = new SerializationXML();
 
-            foreach (var item in xML.getDocumentData())
+            foreach (var item in xML.getStudents())
             {
                 Students.Add(item);
             }
         }
         /// <summary>
-        /// Добавление в коллекцию ObservableCollection
+        /// Adding to the ObservableCollection
         /// </summary>
-        /// <param name="st">Объект для добавления</param>
+        /// <param name="st">Object to add</param>
         public void Add(Student st)
         {
             if (st != null)
             {
-                // Генерация Id для нового объекта
+                // Generating an Id for a new object
                 foreach (var item in Students)
                 {
                     if (st.Id == item.Id)
@@ -54,22 +54,22 @@ namespace ViewModel
 
                 Students.Insert(st.Id, st);
                 SelectedStudent = st;
-                xML.getInDocumentAdd(st);
+                xML.addStudent(st);
             }
         }
         /// <summary>
-        /// Удаление выбранного объекта из модели и коллекции
+        /// Removing the selected object from the model and collection
         /// </summary>
         public void Delete()
         {
             if (selectedStudent != null)
             {
-                xML.getInDocumentDelete(SelectedStudent);
+                xML.deleteStudent(SelectedStudent);
                 Students.Remove(SelectedStudent);
             }
         }
         /// <summary>
-        /// Изменение объекта в модели и коллекции
+        /// Modifying an object in a model and collection
         /// </summary>
         /// <param name="st"></param>
         public void Edit(Student st)
@@ -80,18 +80,18 @@ namespace ViewModel
             Students.Insert(index, st);
 
             SelectedStudent = st;
-            xML.getInDocumentEdit(selectedStudent);
+            xML.updateStudent(selectedStudent);
 
         }
 
         /// <summary>
-        /// Событие изменения коллекции
+        /// Change collection event
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
-        /// Метод вызова изменений.
+        /// Method of calling changes.
         /// </summary>
-        /// <param name="prop">Имя изменяемого свойства</param>
+        /// <param name="prop">The name of the property to be changed</param>
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
