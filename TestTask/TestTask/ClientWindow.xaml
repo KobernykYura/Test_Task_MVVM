@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestTask"
         mc:Ignorable="d"
-        Title="Test Task" Height="350" Width="450" MinHeight="200">
+        Title="Test Task" Height="400" Width="650" MinHeight="200">
     <Window.Resources>
         <AlternationConverter x:Key="altconvBackground">
             <SolidColorBrush Color="Azure"/>
@@ -53,11 +53,13 @@
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Button Content="Добавить" Click="Add_Click" Grid.Row="0" Grid.Column="0" />
-        <Button Content="Изменить" Click="Edit_Click" Grid.Row="0" Grid.Column="1" />
-        <Button Content="Удалить" Click="Delete_Click" Grid.Row="0" Grid.Column="2" />
+        <Button Content="Добавить" Command="{Binding AddCommand}" CommandParameter="{Binding SelectedStudent}" Grid.Row="0" Grid.Column="0" />
+        <Button Content="Изменить" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedStudent}" Grid.Row="0" Grid.Column="1" />
+        <Button Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedStudent}" Grid.Row="0" Grid.Column="2" />
         <TextBlock x:Name="tbWarningEmpty" Grid.RowSpan="4" Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
             Список студентов пуст! Про верьте подключение к данным.
         </TextBlock>
@@ -80,5 +82,51 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <StackPanel DataContext="{Binding SelectedStudent}" Grid.Column="3" Grid.RowSpan="5" Grid.ColumnSpan="2">
+            <Label Content="Имя" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="0,15,0,5" Width="33"/>
+            <TextBox x:Name="tbFirstName" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" ToolTip="Введите имя" Margin="0,5">
+                <TextBox.Text >
+                    <Binding Path="FirstName" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Фамилия" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="0,5" Width="60"/>
+            <TextBox x:Name="tbLast" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" ToolTip="Введите фамилию" Margin="0,5" >
+                <TextBox.Text>
+                    <Binding Path="Last" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Возраст" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="0,5" Width="53"/>
+            <TextBox x:Name="tbAge" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" ToolTip="Введите возраст" Margin="0,5" >
+                <TextBox.Text>
+                    <Binding Path="Age" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Пол" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="0,5" Width="32"/>
+            <ComboBox x:Name="cbGender" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" ToolTip="Выберите пол" Height="22" Margin="0,5" >
+                <ComboBoxItem Content="male"></ComboBoxItem>
+                <ComboBoxItem Content="female"></ComboBoxItem>
+                <ComboBox.Text>
+                    <Binding Path="Gender" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ComboBox.Text>
+            </ComboBox>
+
+        </StackPanel>
     </Grid>
 </Window>

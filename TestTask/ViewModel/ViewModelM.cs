@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using CommonObject;
 using Model;
 using System.Windows;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModel
 {
@@ -12,8 +14,15 @@ namespace ViewModel
     {
         //private int index;
         private Student selectedStudent;
+        //private Student newStudent;
+
+        private RelayCommand addCommand;
+        private RelayCommand deleteCommand;
+        private RelayCommand editCommand;
+
         public ObservableCollection<Student> Students { get; set; }
         SerializationXML xML;
+        IDialogService dialogService;
 
         /// <summary>
         /// The property of the selected item.
@@ -24,10 +33,17 @@ namespace ViewModel
             set { selectedStudent = value; OnPropertyChanged("SelectedStudent"); }
         }
 
+        //public Student NewStudent
+        //{
+        //    get { return newStudent; }
+        //    set { newStudent = value; OnPropertyChanged("NewStudent"); }
+        //}
+
         public ViewModelM()
         {
             Students = new ObservableCollection<Student>();
             xML = new SerializationXML();
+            dialogService = new DialogService();
 
             foreach (var item in xML.getStudents())
             {
@@ -38,50 +54,116 @@ namespace ViewModel
         /// Adding to the ObservableCollection
         /// </summary>
         /// <param name="st">Object to add</param>
-        public void Add(Student st)
+        public RelayCommand AddCommand
         {
-            if (st != null)
+            get
             {
-                // Generating an Id for a new object
-                foreach (var item in Students)
-                {
-                    if (st.Id == item.Id)
-                    {
-                        st.Id++;
-                    }
-                    else break;
-                }
+                return addCommand ??
+                  (addCommand = new RelayCommand(obj =>
+                  {
+                      SelectedStudent = obj as Student;
 
-                Students.Insert(st.Id, st);
-                SelectedStudent = st;
-                xML.addStudent(st);
+                      if (selectedStudent == null)
+                      {
+                          dialogService.ShowMessage("Заполните данные нового студента");
+                          return;
+                      }
+                      //Validation of values
+                      var results = new List<ValidationResult>();
+                      var context = new ValidationContext(SelectedStudent);
+                      if (!Validator.TryValidateObject(SelectedStudent, context, results, true))
+                      {
+                          foreach (var error in results)
+                          {
+                              dialogService.ShowMessage(error.ErrorMessage.ToString());
+                          }
+                          return;
+                      }
+
+                      //if (newStudent != null)
+                      //{
+                          // Generating an Id for a new object
+                          foreach (var item in Students)
+                          {
+                              if (SelectedStudent.Id == item.Id)
+                              {
+                              SelectedStudent.Id++;
+                              }
+                              else break;
+                          }
+
+                          Students.Insert(SelectedStudent.Id, SelectedStudent);
+                          SelectedStudent = SelectedStudent;
+                          xML.addStudent(SelectedStudent);
+                      //}
+                  }));
             }
         }
+
+
         /// <summary>
         /// Removing the selected object from the model and collection
         /// </summary>
-        public void Delete()
+        public RelayCommand DeleteCommand
         {
-            if (selectedStudent != null)
+            get
             {
-                xML.deleteStudent(SelectedStudent);
-                Students.Remove(SelectedStudent);
+                return deleteCommand ??
+                  (deleteCommand = new RelayCommand(obj =>
+                  {
+                      if (selectedStudent == null)
+                      {
+                          dialogService.ShowMessage("Выберите элемент для редактирования");
+                          return;
+                      }
+                      if (selectedStudent != null)
+                      {
+                          xML.deleteStudent(SelectedStudent);
+                          Students.Remove(SelectedStudent);
+                      }
+                  }));
             }
         }
+
         /// <summary>
         /// Modifying an object in a model and collection
         /// </summary>
-        /// <param name="st"></param>
-        public void Edit(Student st)
+        public RelayCommand EditCommand
         {
-            int index = Students.IndexOf(st);
+            get
+            {
+                return editCommand ??
+                  (editCommand = new RelayCommand(obj =>
+                  {
+                      Student student = obj as Student;
 
-            Students.RemoveAt(index);
-            Students.Insert(index, st);
+                      if (student == null)
+                      {
+                          dialogService.ShowMessage("Выберите элемент для редактирования");
+                          return;
+                      }
 
-            SelectedStudent = st;
-            xML.updateStudent(selectedStudent);
+                      //Validation of values
+                      var results = new List<ValidationResult>();
+                      var context = new ValidationContext(student);
+                      if (!Validator.TryValidateObject(student, context, results, true))
+                      {
+                          foreach (var error in results)
+                          {
+                              dialogService.ShowMessage(error.ErrorMessage.ToString());
+                          }
+                          return;
+                      }
 
+                      int index = Students.IndexOf(student);
+
+                      Students.RemoveAt(index);
+                      Students.Insert(index, student);
+
+                      SelectedStudent = student;
+                      xML.updateStudent(selectedStudent);
+                  }));
+            }
         }
 
         /// <summary>

@@ -55,7 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VariableGender.cs" />
     <Compile Include="WindowAdd.xaml.cs">
       <DependentUpon>WindowAdd.xaml</DependentUpon>
     </Compile>

@@ -8,7 +8,7 @@ namespace Model
 {
     public class SerializationXML
     {
-        static string path = "Students.xml"; //../../../Model/
+        static string path = "../../../Model/Students.xml"; //../../../Model/
         private Student[] studentsArray;
 
         public SerializationXML()
@@ -22,16 +22,8 @@ namespace Model
         /// <returns>Returns the list of students.</returns>
         public Student[] getStudents()
         {
-            XElement document;
-            try
-            {
-                document = XElement.Load(path);
-            }
-            catch (Exception)
-            {
-                    throw ;
-            }
-            
+            XElement document = XElement.Load(path);
+
             var collection = from elem in document.Descendants("Student") select new Student {
                 Id = Convert.ToInt32( elem.Attribute("Id").Value),
                 FirstName = elem.Element("FirstName").Value,

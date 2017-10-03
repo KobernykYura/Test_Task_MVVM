@@ -30,7 +30,7 @@ namespace CommonObject
         /// </summary>
         public string Last {
             get { return lastName; }
-            set { lastName = value; OnPropertyChanged("LastName"); }
+            set { lastName = value; OnPropertyChanged("Last"); }
         }
         /// <summary>
         /// Property of the age field;
@@ -79,10 +79,10 @@ namespace CommonObject
                 switch (gender)
                 {
                     case "0":
-                        g = " Мужчина ";
+                        g = " Мужчина "; Gender = "0";
                         break;
                     case "1":
-                        g = " Женщина ";
+                        g = " Женщина "; Gender = "1";
                         break;
                     case "male":
                         g = " Мужчина "; Gender = "0";
